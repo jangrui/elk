@@ -1,0 +1,15 @@
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+filebeat.inputs:
+  - type: log
+    tail_files: true
+    enabled: true
+    backoff: "1s"
+    paths:
+      - /tmp/logs/nginx_access.log
+
+output.logstash:
+  hosts: ["logstash:5044"]

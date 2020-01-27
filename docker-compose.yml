@@ -1,0 +1,91 @@
+version: '3'
+services:
+  elasticsearch:
+    build:
+      context: build/elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    image: jangrui/elasticsearch:$ELK_VERSION
+    container_name: elk-elastic
+    restart: unless-stopped
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      TZ: Asia/Shanghai
+      node.name: es
+      cluster.name: docker-cluster
+      discovery.type: single-node
+      network.host: 0.0.0.0
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      bootstrap.memory_lock: "true"
+      ELASTIC_PASSWORD: changeme
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  kibana:
+    build:
+      context: build/kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    image: jangrui/kibana:$ELK_VERSION
+    container_name: elk-kibana
+    restart: unless-stopped
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./elk_env/usr/share/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - "5601:5601"
+    environment: 
+      TZ: Asia/Shanghai
+
+  logstash:
+    build:
+      context: build/logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    image: jangrui/logstash:$ELK_VERSION
+    container_name: elk-logstash
+    restart: unless-stopped
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./elk_env/usr/share/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./elk_env/usr/share/logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5044:5044"
+      - "9600:9600"
+    environment:
+      TZ: Asia/Shanghai
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+      bootstrap.memory_lock: "true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  filebeat:
+    build: 
+      context: build/filebeat/
+      args: 
+        ELK_VERSION: $ELK_VERSION
+    image: jangrui/filebeat:$ELK_VERSION
+    container_name: elk-filebeat
+    restart: unless-stopped
+    hostname: filebeat
+    user: root
+    depends_on: 
+      - logstash
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # - /var/lib/docker/container:/var/lib/docker/container:ro
+      - ./elk_env/usr/share/filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./logs:/tmp/logs:ro
+    
+volumes: 
+  esdata:

@@ -1,0 +1,32 @@
+input {
+    beats {
+        port => 5044
+        type => apache
+    }
+}
+
+filter {
+    if [type] == "apache" {
+        grok {
+            match => { "message" => "%{COMBINEDAPACHELOG" }
+        }
+        date {
+            match => [ "timestamp_string" , "ISO8601" ]
+        }
+        mutate {
+            remove_field => [ "message", "timestamp_string" ]
+        }
+    }
+}
+
+output {
+    if [type] == "apache" {
+        elasticsearch {
+            hosts => [ "elasticsearch:9200" ]
+            user => "elastic"
+            password => "changeme"
+            index => "apache-combined-%{+YYYY.MM.dd}"
+        }
+        stdout { codec => rubydebug }
+    }
+}
