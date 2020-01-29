@@ -57,6 +57,7 @@ services:
     volumes:
       - ./elk_env/usr/share/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./elk_env/usr/share/logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./logs/:/tmp/logs/:ro
     ports:
       - "5044:5044"
       - "9600:9600"
