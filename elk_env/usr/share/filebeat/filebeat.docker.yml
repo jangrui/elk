@@ -4,9 +4,19 @@ filebeat.inputs:
     enabled: true
     backoff: "1s"
     paths:
-      - /tmp/logs/nginx_access.log
+      - /var/log/nginx/access.log
     fields:
-      type: nginx
+      type: nginx_access
+    fields_under_root: true
+  
+  - type: log
+    tail_files: true
+    enabled: true
+    backoff: "1s"
+    paths:
+      - /var/log/nginx/error.log
+    fields:
+      type: nginx_error
     fields_under_root: true
 
   - type: log
@@ -14,10 +24,30 @@ filebeat.inputs:
     enabled: true
     backoff: "1s"
     paths:
-      - /tmp/logs/sucure
+      - /var/log/secure
     fields:
       type: syslog
     fields_under_root: true
 
-output.logstash:
-  hosts: ["logstash:5044"]
+# output.logstash:
+#   hosts: ["logstash:5044"]
+
+output.redis:
+  hosts: [ "redis" ]
+  password: changeme
+  key: elk
+  keys:
+    # - key: nginx_access
+    #   when.contains:
+    #     type: nginx_access
+    # - key: nginx_error
+    #   when.contains:
+    #     type: nginx_error
+    # - key: syslog
+    #   when.contains:
+    #     type: syslog
+    - key: "%{[type]}"
+      mapping:
+        "nginx_access": "nginx_access"
+        "nginx_error": "nginx_error"
+        "syslog": "syslog"

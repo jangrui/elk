@@ -1,0 +1,126 @@
+filebeat.modules:
+- module: aws
+  s3access:
+    enabled: false
+  elb:
+    enabled: false
+- module: azure
+  activitylogs:
+    enabled: true
+    var:
+      namespace: ""
+      eventhub: ["insights-operational-logs"]
+      consumer_group: "$Default"
+      connection_string: ""
+- module: cef
+  log:
+    enabled: true
+    var:
+      syslog_host: localhost
+      syslog_port: 9003
+- module: cisco
+  asa:
+    enabled: true
+  ftd:
+    enabled: true
+  ios:
+    enabled: true
+- module: coredns
+  log:
+    enabled: true
+- module: elasticsearch
+  server:
+    enabled: true
+  gc:
+    enabled: true
+  audit:
+    enabled: true
+  slowlog:
+    enabled: true
+  deprecation:
+    enabled: true
+- module: envoyproxy
+  log:
+    enabled: true
+- module: googlecloud
+  vpcflow:
+    enabled: true
+    var.project_id: my-gcp-project-id
+    var.topic: googlecloud-vpc-flowlogs
+    var.subscription_name: filebeat-googlecloud-vpc-flowlogs-sub
+    var.credentials_file: ${path.config}/gcp-service-account-xyz.json
+- module: haproxy
+  log:
+    enabled: true
+- module: ibmmq
+  errorlog:
+    enabled: true
+- module: iptables
+  log:
+    enabled: true
+- module: kafka
+  log:
+    enabled: true
+- module: kibana
+  log:
+    enabled: true
+- module: misp
+  threat:
+    enabled: true
+- module: mssql
+  log:
+    enabled: true
+- module: nats
+  log:
+    enabled: true
+- module: netflow
+  log:
+    enabled: true
+    var:
+      netflow_host: localhost
+      netflow_port: 2055
+- module: osquery
+  result:
+    enabled: true
+- module: panw
+  panos:
+    enabled: true
+- module: rabbitmq
+  log:
+    enabled: true
+- module: santa
+  log:
+    enabled: true
+- module: suricata
+  eve:
+    enabled: true
+- module: zeek
+  connection:
+    enabled: true
+  dns:
+    enabled: true
+  http:
+    enabled: true
+  files:
+    enabled: true
+  ssl:
+    enabled: true
+  notice:
+    enabled: true
+filebeat.inputs:
+- type: log
+  enabled: false
+  paths:
+    - /var/log/*.log
+- type: google-pubsub
+  enabled: false
+  project_id: my-gcp-project-id
+  topic: my-gcp-pubsub-topic-name
+  subscription.name: my-gcp-pubsub-subscription-name
+  credentials_file: ${path.config}/my-pubsub-subscriber-credentials.json
+output.elasticsearch:
+  hosts: ["localhost:9200"]
+setup.template.settings:
+setup.kibana:
+logging.to_files: true
+logging.files:
