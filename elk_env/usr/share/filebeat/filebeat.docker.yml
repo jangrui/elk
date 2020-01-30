@@ -14,7 +14,7 @@ filebeat.inputs:
     enabled: true
     backoff: "1s"
     paths:
-      - /tmp/logs/messages
+      - /tmp/logs/sucure
     fields:
       type: syslog
     fields_under_root: true
