@@ -57,7 +57,7 @@ services:
     volumes:
       - ./elk_env/usr/share/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./elk_env/usr/share/logstash/pipeline:/usr/share/logstash/pipeline:ro
-      - ./logs/:/tmp/logs/:ro
+      # - ./logs/:/tmp/logs/:ro
     ports:
       - "5044:5044"
       - "9600:9600"
@@ -84,9 +84,9 @@ services:
       - logstash
     volumes: 
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # - /var/lib/docker/container:/var/lib/docker/container:ro
-      # - ./elk_env/usr/share/filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
-      # - ./logs:/tmp/logs:ro
+      - /var/lib/docker/container:/var/lib/docker/container:ro
+      - ./elk_env/usr/share/filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./logs:/tmp/logs:ro
     
 volumes: 
   esdata:
