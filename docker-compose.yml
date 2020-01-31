@@ -6,7 +6,7 @@ services:
       args:
         ELK_VERSION: $ELK_VERSION
     image: jangrui/elasticsearch:$ELK_VERSION
-    container_name: elk-elastic
+    container_name: elk-elasticsearch
     restart: unless-stopped
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
@@ -53,8 +53,8 @@ services:
     image: jangrui/logstash:$ELK_VERSION
     container_name: elk-logstash
     restart: unless-stopped
-    depends_on:
-      - elasticsearch
+    # depends_on:
+      # - elasticsearch
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
@@ -84,8 +84,7 @@ services:
       - redis:/data
       # - ./redis:/data
     command: 
-      # redis-server --requirepass changeme --appendonly yes
-      redis-server --appendonly yes
+      redis-server --requirepass changeme --appendonly yes
 
   filebeat:
     build: 
@@ -98,9 +97,6 @@ services:
     hostname: filebeat
     user: root
     privileged: true
-    depends_on: 
-      - logstash
-      - redis
     environment: 
       TZ: Asia/Shanghai
       strict.perms: "false"
