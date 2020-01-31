@@ -82,7 +82,7 @@ services:
     volumes: 
       - redis:/data
     command: 
-      redis-server --requirepass changeme
+      redis-server --requirepass changeme --appendonly yes
 
   filebeat:
     build: 
@@ -94,15 +94,17 @@ services:
     restart: unless-stopped
     hostname: filebeat
     user: root
+    privileged: true
     depends_on: 
       - logstash
       - redis
     environment: 
       TZ: Asia/Shanghai
+      strict.perms: "false"
     volumes: 
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/lib/docker/container:/var/lib/docker/container:ro
-      - ./elk_env/usr/share/filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./elk_env/usr/share/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/log:/var/log:ro
       # - ./logs:/tmp/logs:ro
 

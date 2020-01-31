@@ -36,18 +36,18 @@ output.redis:
   hosts: [ "redis" ]
   password: changeme
   key: elk
-  keys:
-    # - key: nginx_access
-    #   when.contains:
-    #     type: nginx_access
-    # - key: nginx_error
-    #   when.contains:
-    #     type: nginx_error
-    # - key: syslog
-    #   when.contains:
-    #     type: syslog
-    - key: "%{[type]}"
-      mapping:
-        "nginx_access": "nginx_access"
-        "nginx_error": "nginx_error"
-        "syslog": "syslog"
+  # keys:
+  #   - key: nginx_access
+  #     when.contains:
+  #       type: nginx_access
+  #   - key: nginx_error
+  #     when.contains:
+  #       type: nginx_error
+  #   - key: syslog
+  #     when.contains:
+  #       type: syslog
+  #   - key: "%{[type]}"
+  #     mapping:
+  #       "nginx_access": "nginx_access"
+  #       "nginx_error": "nginx_error"
+  #       "syslog": "syslog"
