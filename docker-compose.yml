@@ -39,7 +39,7 @@ services:
     depends_on:
       - elasticsearch
     volumes:
-      - ./elk_env/usr/share/kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
     ports:
       - "5601:5601"
     environment: 
@@ -56,9 +56,9 @@ services:
     depends_on:
       - elasticsearch
     volumes:
-      - ./elk_env/usr/share/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
-      - ./elk_env/usr/share/logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
-      - ./elk_env/usr/share/logstash/pipeline:/usr/share/logstash/pipeline:ro
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
     ports:
       - "5044:5044"
       - "9600:9600"
@@ -82,7 +82,7 @@ services:
       - 6379:6379
     volumes: 
       - redis:/data
-      - ./redis:/data
+      # - ./redis:/data
     command: 
       redis-server --requirepass changeme --appendonly yes
 
@@ -104,12 +104,12 @@ services:
       TZ: Asia/Shanghai
       strict.perms: "false"
     volumes: 
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/lib/docker/container:/var/lib/docker/container:ro
-      - ./elk_env/usr/share/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/log:/var/log:ro
       # - ./logs:/tmp/logs:ro
 
 volumes: 
-  es:
+  elasticsearch:
   redis:
