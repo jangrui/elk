@@ -84,7 +84,8 @@ services:
       - redis:/data
       # - ./redis:/data
     command: 
-      redis-server --requirepass changeme --appendonly yes
+      # redis-server --requirepass changeme --appendonly yes
+      redis-server --appendonly yes
 
   filebeat:
     build: 

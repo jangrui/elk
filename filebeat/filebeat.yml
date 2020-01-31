@@ -34,7 +34,7 @@ filebeat.inputs:
 
 output.redis:
   hosts: [ "redis" ]
-  password: changeme
+  # password: changeme
   key: elk
   # keys:
   #   - key: nginx_access
