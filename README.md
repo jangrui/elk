@@ -11,6 +11,7 @@ $ chcon -R system_u:object_r:admin_home_t:s0 elk/
 ```console
 git clone https://github.com/jangrui/docker-compose
 cd docker-compose/elk
+sudo chown root.root filebeat/filebeat.yml
 docker-compose build
 docker-compose up
 ```
