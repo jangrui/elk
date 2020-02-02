@@ -26,7 +26,7 @@
 #       - '/var/lib/docker/containers/*/*.log'
 filebeat.config:
   modules:
-    path: ${path.config}/modules.d/*.yml
+    path: ${path.config}/modules.d/*.yml*
     reload.enabled: false
 
 filebeat.modules:
@@ -50,10 +50,10 @@ filebeat.modules:
 output:
   # logstash:
   #  hosts: ["logstash:5044"]
-  # redis:
-  #   hosts: [ "redis" ]
-  #   password: "changeme"
-  #   key: 'filebeat'
-  kafka:
-    hosts: [ "kafka:9092" ]
-    topic: filebeat
+  redis:
+    hosts: [ "redis" ]
+    password: "changeme"
+    key: 'filebeat'
+  # kafka:
+  #   hosts: [ "kafka:9092" ]
+  #   topic: filebeat

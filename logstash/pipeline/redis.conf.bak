@@ -1,0 +1,78 @@
+input {
+    redis {
+        host => "redis"
+        port => "6379"
+        password => "changeme"
+        data_type => "list"
+        key => "filebeat"
+        # codec => json
+    }
+}
+
+## Add your filters / logstash plugins configuration here
+
+filter {
+    if [type] == "syslog" {
+        grok {
+            match => {
+                "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}"
+            }
+            add_field => [ "received_at", "%{@timestamp}" ]
+            add_field => [ "received_from", "%{host}" ]
+            remove_field => [ "message" ]
+        }
+        syslog_pri { }
+        date {
+            match => [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+        }
+    }
+
+    if [type] == "nginx_access" {
+		grok {
+			match => {
+				"message" => '(?<Remote_Address>[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}) - - \[(?<Request_Date>[^ ]+ \+[0-9]+)\] "(?<Request_Method>[A-Z]+) (?<Request_URL>[^ ]+) (?<Request_Protocol>[^ ]+)" (?<Status_Code>[0-9]+) (?<Content-Length>[0-9]+) "(?<Referrer>[^"]+)" "(?<User-Agent>[^"]+)"'
+			}
+			remove_field => [ "message", "@version", "path" ]
+		}
+		date {
+			match => [ "Request_Date" , "dd/MMM/yyyy:HH:mm:ss Z" ]
+			remove_field => ["timestamp"]
+		}
+	}
+}
+
+output {
+    if [type] == "syslog" {
+        elasticsearch {
+            hosts => [ "elasticsearch:9200" ]
+            user => "elastic"
+            password => "changeme"
+            index => "syslog-%{+YYYY.MM.dd}"
+        }
+        stdout { codec => rubydebug }
+    } else if [type] == "nginx_access" {
+		elasticsearch {
+			hosts => "elasticsearch:9200"
+			user => "elastic"
+			password => "changeme"
+			index => "nginx_access-%{+YYYY.MM.dd}"
+		}
+        stdout { codec => rubydebug }
+	} else if [type] == "nginx_error" { 
+        elasticsearch {
+			hosts => "elasticsearch:9200"
+			user => "elastic"
+			password => "changeme"
+			index => "nginx_error-%{+YYYY.MM.dd}"
+		}
+        stdout { codec => rubydebug }
+    } else {
+        elasticsearch {
+			hosts => "elasticsearch:9200"
+			user => "elastic"
+			password => "changeme"
+			index => "logstash-%{+YYYY.MM.dd}"
+		}
+        stdout { codec => rubydebug }
+    }
+}
