@@ -26,7 +26,11 @@ filebeat.inputs:
 # output.logstash:
 #   hosts: ["logstash:5044"]
 
-output.redis:
-  hosts: [ "redis" ]
-  password: "changeme"
-  key: 'filebeat'
+output:
+  # redis:
+  #   hosts: [ "redis" ]
+  #   password: "changeme"
+  #   key: 'filebeat'
+  kafka:
+    hosts: [ "kafka:9092" ]
+    topic: filebeat

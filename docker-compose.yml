@@ -86,6 +86,44 @@ services:
     command: 
       redis-server --requirepass changeme --appendonly yes
 
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    container_name: elk-zk
+    restart: unless-stopped
+    hostname: $HOSTNAME
+    ports:
+      - '2181:2181'
+    volumes: 
+      - zk:/bitnami/zookeeper
+    environment:
+      TZ: Asia/Shanghai
+      ZOO_TICK_TIME: 2000
+      ZOO_INIT_LIMIT: 5
+      ZOO_SYNC_LIMIT: 2
+      ZOO_ENABLE_AUTH: "yes"
+      ZOO_SERVER_USERS: kafka
+      ZOO_SERVER_PASSWORDS: kafka_password
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: elk-kafka
+    restart: unless-stopped
+    hostname: $HOSTNAME
+    user: root
+    ports:
+      - 9092
+    volumes: 
+      - kafka:/bitnami/kafka
+    environment:
+      TZ: Asia/Shanghai
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ZOOKEEPER_USER: kafka
+      KAFKA_ZOOKEEPER_PASSWORD: kafka_password
+      # KAFKA_CREATE_TOPICS: filebeat
+
   filebeat:
     build: 
       context: build/filebeat/
@@ -94,7 +132,7 @@ services:
     image: jangrui/filebeat:$ELK_VERSION
     container_name: elk-filebeat
     restart: unless-stopped
-    hostname: filebeat
+    # hostname: filebeat
     user: root
     privileged: true
     environment: 
@@ -104,9 +142,11 @@ services:
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/lib/docker/container:/var/lib/docker/container:ro
-      - /var/log:/var/log:ro
-      # - ./logs:/tmp/logs:ro
+      # - /var/log:/var/log:ro
+      - ./log:/var/log:ro
 
 volumes: 
   elasticsearch:
   redis:
+  zk:
+  kafka:
