@@ -30,13 +30,13 @@ filebeat.config:
     reload.enabled: false
 
 filebeat.modules:
-  - module: system
-    auth:
-      enabled: true
-      var.paths: ["/var/log/messages"]
-    error:
-      enabled: true
-      var.paths: ["/var/log/secure"]
+  # - module: system
+  #   auth:
+  #     enabled: true
+  #     var.paths: ["/var/log/messages"]
+  #   error:
+  #     enabled: true
+  #     var.paths: ["/var/log/secure"]
   - module: nginx
     access:
       enabled: true
