@@ -14,6 +14,34 @@ filebeat.modules:
   error:
     enabled: true
     var.paths: ["/var/log/nginx/error.log*"]
+- module: apache
+  access:
+    enabled: true
+    # var.paths:
+    # input:
+  error:
+    enabled: true
+    # var.paths:
+    # input:
+- module: mysql
+  error:
+    enabled: true
+    # var.paths:
+    # input:
+  slowlog:
+    enabled: true
+    # var.paths:
+    # input:
+- module: mongodb
+  log:
+    enabled: true
+    # var.paths:
+    # input:
+- module: haproxy
+  log:
+    enabled: true
+    #var.input:
+    #var.paths:
 #=========================== Filebeat inputs =============================
 # filebeat.inputs:
 # - type: docker
