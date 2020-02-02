@@ -31,6 +31,6 @@ output:
     hosts: [ "redis" ]
     password: "changeme"
     key: 'filebeat'
-  kafka:
-    hosts: [ "kafka:9092" ]
-    topic: filebeat
+  # kafka:
+  #   hosts: [ "kafka:9092" ]
+  #   topic: filebeat
