@@ -26,7 +26,8 @@
 #       - '/var/lib/docker/containers/*/*.log'
 filebeat.config:
   modules:
-    path: ${path.config}/modules.d/*.yml*
+    # path: ${path.config}/modules.d/*.yml*
+    path: ${path.config}/modules.d/nginx.yml*
     reload.enabled: false
 
 filebeat.modules:
