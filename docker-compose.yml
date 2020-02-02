@@ -103,7 +103,7 @@ services:
       # ZOO_ENABLE_AUTH: "no"
       # ZOO_SERVER_USERS: kafka
       # ZOO_SERVER_PASSWORDS: kafka_password
-      ALLOW_ANONYMOUS_LOGIN: yes
+      ALLOW_ANONYMOUS_LOGIN: 'yes'
 
   kafka:
     image: bitnami/kafka:latest
