@@ -111,7 +111,7 @@ services:
     # hostname: $HOSTNAME
     user: root
     ports:
-      - 9092
+      - 9092:9092
     volumes: 
       - kafka:/bitnami/kafka
     environment:
