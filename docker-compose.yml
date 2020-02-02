@@ -100,9 +100,9 @@ services:
       # ZOO_TICK_TIME: 2000
       # ZOO_INIT_LIMIT: 5
       # ZOO_SYNC_LIMIT: 2
-      ZOO_ENABLE_AUTH: "yes"
-      ZOO_SERVER_USERS: kafka
-      ZOO_SERVER_PASSWORDS: kafka_password
+      # ZOO_ENABLE_AUTH: "yes"
+      # ZOO_SERVER_USERS: kafka
+      # ZOO_SERVER_PASSWORDS: kafka_password
 
   kafka:
     image: bitnami/kafka:latest
@@ -116,12 +116,17 @@ services:
       - kafka:/bitnami/kafka
     environment:
       TZ: Asia/Shanghai
-      ALLOW_PLAINTEXT_LISTENER: "yes"
-      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
-      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://:9092
-      KAFKA_ZOOKEEPER_USER: kafka
-      KAFKA_ZOOKEEPER_PASSWORD: kafka_password
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://kafka1:9091
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9091
+      KAFKA_MESSAGE_MAX_BYTES: 2000000
+      # ALLOW_PLAINTEXT_LISTENER: "yes"
+      # KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      # KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
+      # KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://:9092
+      # KAFKA_ZOOKEEPER_USER: kafka
+      # KAFKA_ZOOKEEPER_PASSWORD: kafka_password
       # KAFKA_CREATE_TOPICS: filebeat
 
   filebeat:
