@@ -116,7 +116,7 @@ services:
     volumes: 
       - kafka:/bitnami/kafka
     depends_on: 
-      - kafka
+      - zookeeper
     environment:
       TZ: Asia/Shanghai
       ALLOW_PLAINTEXT_LISTENER: "yes"
