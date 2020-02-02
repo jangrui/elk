@@ -1,32 +1,55 @@
-filebeat.inputs:
-  - type: log
-    paths:
-      - /var/log/nginx/access.log
-    tail_files: true
-    fields_under_root: true
-    fields:
-      type: nginx_access
+# filebeat.inputs:
+#   - type: log
+#     paths:
+#       - /var/log/nginx/access.log
+#     tail_files: true
+#     fields_under_root: true
+#     fields:
+#       type: nginx_access
+#   - type: log
+#     paths:
+#       - /var/log/nginx/error.log
+#     tail_files: true
+#     fields_under_root: true
+#     fields:
+#       type: nginx_error
+#   - type: log
+#     paths:
+#       - /var/log/secure
+#     tail_files: true
+#     fields_under_root: true
+#     fields:
+#       type: syslog
+#   - type: container
+#     stream: stdout
+#     paths:
+#       - '/var/lib/docker/containers/*/*.log'
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
 
-  - type: log
-    paths:
-      - /var/log/nginx/error.log
-    tail_files: true
-    fields_under_root: true
-    fields:
-      type: nginx_error
+filebeat.modules:
+  - module: system
+    auth:
+      enabled: true
+      var.paths: ["/var/log/messages"]
+    error:
+      enabled: true
+      var.paths: ["/var/log/secure"]
+  - module: nginx
+    access:
+      enabled: true
+      var.paths: ["/var/log/nginx/access.log*"]
+    error:
+      enabled: true
+      var.paths: ["/var/log/nginx/error.log*"]
+  - module: mysql
 
-  - type: log
-    paths:
-      - /var/log/secure
-    tail_files: true
-    fields_under_root: true
-    fields:
-      type: syslog
-
-# output.logstash:
-#   hosts: ["logstash:5044"]
-
+# output.
 output:
+  # logstash:
+  #  hosts: ["logstash:5044"]
   # redis:
   #   hosts: [ "redis" ]
   #   password: "changeme"
