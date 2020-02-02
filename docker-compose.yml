@@ -152,7 +152,10 @@ services:
       - /var/lib/docker/container:/var/lib/docker/container:ro
       - /var/log:/var/log:ro
       # - ./log:/var/log:ro
-
+      # # This is needed for filebeat to load jenkins build log path as specified in filebeat.yml
+      # - /var/lib/docker/volumes/jenkins_home/_data/jobs/:/var/lib/docker/volumes/jenkins_home/_data/jobs/:ro
+      # This is needed for filebeat to load logs for auditd module
+      # - /var/log/audit/:/var/log/audit/:ro
 volumes: 
   elasticsearch:
   redis:
