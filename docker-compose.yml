@@ -108,7 +108,7 @@ services:
     image: 'bitnami/kafka:latest'
     container_name: elk-kafka
     restart: unless-stopped
-    hostname: $HOSTNAME
+    # hostname: $HOSTNAME
     user: root
     ports:
       - 9092
