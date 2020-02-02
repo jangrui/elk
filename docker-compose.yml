@@ -136,7 +136,7 @@ services:
     image: jangrui/filebeat:$ELK_VERSION
     container_name: elk-filebeat
     restart: unless-stopped
-    hostname: $HOSTNAME-filebeat
+    hostname: filebeat
     user: root
     privileged: true
     environment: 
