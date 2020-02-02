@@ -132,7 +132,7 @@ services:
     image: jangrui/filebeat:$ELK_VERSION
     container_name: elk-filebeat
     restart: unless-stopped
-    # hostname: filebeat
+    hostname: filebeat
     user: root
     privileged: true
     environment: 
@@ -142,8 +142,8 @@ services:
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/lib/docker/container:/var/lib/docker/container:ro
-      # - /var/log:/var/log:ro
-      - ./log:/var/log:ro
+      - /var/log:/var/log:ro
+      # - ./log:/var/log:ro
 
 volumes: 
   elasticsearch:
