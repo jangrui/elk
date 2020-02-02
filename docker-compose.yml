@@ -90,7 +90,7 @@ services:
     image: 'bitnami/zookeeper:latest'
     container_name: elk-zk
     restart: unless-stopped
-    hostname: $HOSTNAME
+    # hostname: $HOSTNAME
     ports:
       - '2181:2181'
     volumes: 
