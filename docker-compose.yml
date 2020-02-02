@@ -115,6 +115,8 @@ services:
       - 9092:9092
     volumes: 
       - kafka:/bitnami/kafka
+    depends_on: 
+      - kafka
     environment:
       TZ: Asia/Shanghai
       ALLOW_PLAINTEXT_LISTENER: "yes"
