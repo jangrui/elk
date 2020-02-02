@@ -32,5 +32,5 @@ output:
   #   password: "changeme"
   #   key: 'filebeat'
   kafka:
-    hosts: [ "kafka" ]
+    hosts: [ "kafka:9092" ]
     topic: filebeat
