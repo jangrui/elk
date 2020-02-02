@@ -42,14 +42,14 @@ filebeat.modules:
     enabled: true
     #var.input:
     #var.paths:
-- module: redis
-  log:
-    enabled: true
-    # var.paths: ["/var/log/redis/redis-server.log*"]
-  slowlog:
-    enabled: true
-    # var.hosts: ["localhost:6379"]
-    # var.password:
+# - module: redis
+#   log:
+#     enabled: true
+#     # var.paths: ["/var/log/redis/redis-server.log*"]
+#   slowlog:
+#     enabled: true
+#     # var.hosts: ["localhost:6379"]
+#     # var.password:
 - module: postgresql
   log:
     enabled: true
@@ -64,29 +64,29 @@ filebeat.modules:
   log:
     enabled: true
     #var.paths:
-# - module: elasticsearch
-#   server:
-#     enabled: true
-#     #var.paths:
-#   gc:
-#     enabled: true
-#     #var.paths:
-#   audit:
-#     enabled: true
-#     #var.paths:
-#   slowlog:
-#     enabled: true
-#     #var.paths:
-#   deprecation:
-#     enabled: true
-#     #var.paths:
-# - module: logstash
-#   log:
-#     enabled: true
-#     # var.paths:
-#   slowlog:
-#     enabled: true
-#     # var.paths:
+- module: elasticsearch
+  server:
+    enabled: true
+    #var.paths:
+  gc:
+    enabled: true
+    #var.paths:
+  audit:
+    enabled: true
+    #var.paths:
+  slowlog:
+    enabled: true
+    #var.paths:
+  deprecation:
+    enabled: true
+    #var.paths:
+- module: logstash
+  log:
+    enabled: true
+    # var.paths:
+  slowlog:
+    enabled: true
+    # var.paths:
 - module: kibana
   log:
     enabled: true
