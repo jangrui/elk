@@ -42,6 +42,87 @@ filebeat.modules:
     enabled: true
     #var.input:
     #var.paths:
+- module: redis
+  log:
+    enabled: true
+    # var.paths: ["/var/log/redis/redis-server.log*"]
+  slowlog:
+    enabled: true
+    # var.hosts: ["localhost:6379"]
+    # var.password:
+- module: postgresql
+  log:
+    enabled: true
+    #var.paths:
+    #input:
+- module: osquery
+  result:
+    enabled: true
+    # var.paths:
+    # var.use_namespace: true
+- module: nats
+  log:
+    enabled: true
+    #var.paths:
+- module: elasticsearch
+  server:
+    enabled: true
+    #var.paths:
+  gc:
+    enabled: true
+    #var.paths:
+  audit:
+    enabled: true
+    #var.paths:
+  slowlog:
+    enabled: true
+    #var.paths:
+  deprecation:
+    enabled: true
+    #var.paths:
+- module: logstash
+  log:
+    enabled: true
+    # var.paths:
+  slowlog:
+    enabled: true
+    # var.paths:
+- module: kibana
+  log:
+    enabled: true
+    #var.paths:
+- module: kafka
+  log:
+    enabled: true
+    #var.kafka_home:
+    #var.paths:
+- module: iis
+  access:
+    enabled: true
+    #var.paths:
+    #input:
+  error:
+    enabled: true
+    #var.paths:
+    #input:
+- module: icinga
+  main:
+    enabled: true
+    #var.paths:
+    #input:
+  debug:
+    enabled: true
+    #var.paths:
+    #input:
+  startup:
+    enabled: true
+    #var.paths:
+    #input:
+- module: auditd
+  log:
+    enabled: true
+    #var.paths:
+    #input:
 #=========================== Filebeat inputs =============================
 # filebeat.inputs:
 # - type: docker
