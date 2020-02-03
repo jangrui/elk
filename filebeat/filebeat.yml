@@ -2,11 +2,11 @@
 # https://github.com/elastic/beats/blob/master/filebeat/filebeat.reference.yml
 #==========================  Modules configuration =============================
 filebeat.modules:
-# - module: system
-#   auth:
-#     enabled: true
-#   syslog:
-#     enabled: true
+- module: system
+  auth:
+    enabled: true
+  syslog:
+    enabled: true
 - module: nginx
   access:
     enabled: true
