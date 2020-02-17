@@ -85,7 +85,7 @@ services:
       - redis:/data
       # - ./redis:/data
     command: 
-      redis-server --requirepass changeme --appendonly yes
+      redis-server --requirepass changeme
 
   zookeeper:
     image: bitnami/zookeeper:latest
