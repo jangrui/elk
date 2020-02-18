@@ -25,3 +25,10 @@ In order to entirely shutdown the stack and remove all persisted data, use the f
 ```
 docker-compose down -v
 ```
+
+## 更改时区
+
+```
+sudo timedatectl set-timezone Asia/Shanghai
+systemctl restart rsyslog
+```

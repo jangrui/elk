@@ -5,8 +5,12 @@ filebeat.modules:
 - module: system
   auth:
     enabled: true
+    # var.paths:
+    # input:
   syslog:
     enabled: true
+    # var.paths:
+    # input:
 - module: nginx
   access:
     enabled: true
