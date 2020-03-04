@@ -73,7 +73,9 @@ services:
         hard: -1
 
   redis:
-    image: redis:latest
+    build:
+      context: build/logstash/
+    image: jangrui/redis:latest
     container_name: elk-reids
     restart: unless-stopped
     hostname: $HOSTNAME
