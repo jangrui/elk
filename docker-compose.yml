@@ -81,8 +81,6 @@ services:
     hostname: $HOSTNAME
     environment: 
       TZ: Asia/Shanghai
-    ports: 
-      - 6379:6379
     command: 
       redis-server --requirepass changeme
 
