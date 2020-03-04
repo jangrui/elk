@@ -74,7 +74,7 @@ services:
 
   redis:
     build:
-      context: build/logstash/
+      context: build/redis/
     image: jangrui/redis:latest
     container_name: elk-reids
     restart: unless-stopped
