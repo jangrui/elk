@@ -73,7 +73,7 @@ services:
         hard: -1
 
   redis:
-    image: redis:alpine
+    image: redis:latest
     container_name: elk-reids
     restart: unless-stopped
     hostname: $HOSTNAME
@@ -81,9 +81,6 @@ services:
       TZ: Asia/Shanghai
     ports: 
       - 6379:6379
-    volumes: 
-      - redis:/data
-      # - ./redis:/data
     command: 
       redis-server --requirepass changeme
 
@@ -147,6 +144,7 @@ services:
       ELASTICSEARCH_PASSWORD: ${ELASTICSEARCH_PASSWORD:-changeme}
     # command: ["--strict.perms=false"]
     volumes: 
+      - filebeat:/usr/share/filebeat/data
       - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/lib/docker/container:/var/lib/docker/container:ro
@@ -158,6 +156,6 @@ services:
       # - /var/log/audit/:/var/log/audit/:ro
 volumes: 
   elasticsearch:
-  redis:
   zk:
   kafka:
+  filebeat:
